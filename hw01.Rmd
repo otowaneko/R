@@ -1,0 +1,54 @@
+---
+title: "hw01"
+output:
+  word_document: default
+  html_document:
+    highlight: pygments
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+head(data)
+```
+## 題目
+
+Find the variance and standard deviation of the following sample.
+
+用下列的樣本找出變異數與標準差
+
+0 -5 -3 6 4 -4 1 -5 0 3
+
+--------
+
+讀入資料
+```{r cars, class.source = c("numCode", "r", "numberLines")}
+data=read.csv("C:/Users/User/Documents/www.csv")
+a=data.frame(
+  numbers=c(data$number),
+  amounts=c(data$amount)
+)
+```
+
+
+-------
+
+計算變異數和標準差
+```{r car, class.source = c("numCode", "r", "numberLines"),results='hold'}
+var(a$number)
+
+sd(a$number)
+```
+
+
+--------
+
+繪製圖形
+```{r draw, class.source = c("numCode", "r", "numberLines")}
+library(ggplot2)
+library(gcookbook)
+ggplot(a, aes(x = numbers, y = amounts)) + geom_point(stat = "identity") 
+```
+
+
+

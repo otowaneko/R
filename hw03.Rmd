@@ -1,0 +1,112 @@
+---
+title: "成年人教育程度"
+author: "09156220 陳怡勳 09156231 莫諼 09156257 張芷瑜"
+output:
+  html_document:     
+     highlight: pygments
+     df_print: kable
+  pdf_document: default
+---
+
+資料來源:經濟合作暨發展組織 OECD 
+https://data.oecd.org/eduatt/adult-education-level.htm
+
+OECD(2021),Adult education level(indicatior).doi:10.1787/36bce3fe-en(Accessed on 21 May 2021)
+
+[Book note]為什麼教育如此重要?
+https://jiaching.com/creative-schools-ken-robinson/
+
+教育:財富蘊含其中
+https://www.un.org/chinese/esa/education/lifelonglearning/8_4.html
+
+World Bank-Government expenditure on education, total(% of GDP)
+https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?end=2019&start=1970&view=chart
+
+中華民國統計資料網
+https://www.stat.gov.tw/ct.asp?xItem=39009&CtNode=6216&mp=4
+
+教育部統計處-重點資訊看板
+https://stats.moe.gov.tw/chartweb/Default.aspx?rptvalue=f5
+
+WORLD BANK-教育因何對經濟發展至關重要
+https://blogs.worldbank.org/zh-hans/node/18688
+
+國家代碼中文及英文對照表(3碼及2碼)
+https://www.webdesigntooler.com/internet-country-code-table
+
+---
+
+## 教育的重要
+
+以教育程度作為這次的報告主題,是因為教育非常重要.經過教育過後,人們可以學習到新技能以及了解到自己的能力,遇到問題時就能有更多能力或可以選擇更好的方法去解決,教育也有助於國家經濟程度提升,因為人們有了更多技術與技能去做較為複雜且薪資較高的工作.
+
+國際二十一世紀教育委員會一份在2007年的報告中提出教育可以使人類朝向和平.自由和社會正義邁進,藉其減少貧困.排斥.不理解.壓迫.戰爭等現象,也是一種會產生長期效益的經濟和政治投資
+
+---
+## 數據說明
+
+這份數據是調查25~64歲的人的最高教育程度是在高中以下的占比
+#丹麥.葡萄牙.以色列.南非.美國.南韓
+
+```{r setup,class.source = c("numCode", "r", "numberLines")}
+#讀檔
+knitr::opts_chunk$set(echo = TRUE)
+a<-read.csv("/Users/User/Desktop/aaa.csv")
+b<-data.frame(
+ location=c(a$LOCATION),
+ time=c(a$TIME),
+ value=c(a$Value)
+ )
+c=read.csv("/Users/User/Desktop/qqq.csv")
+d=data.frame(
+  country=c(c$Country),
+  time=c(c$Time),
+  value=c(c$Value)
+)
+e=read.csv("/Users/User/Desktop/eee.csv")
+f=data.frame(
+  year=c(e$Year),
+  amount=c(e$Amount),
+  value=c(e$Value)
+)
+```
+
+註解:2~8行
+
+
+```{r,echo=FALSE}
+b
+d
+f
+```
+
+
+```{r pressure, class.source = c("numCode", "r", "numberLines"),message=FALSE,warning=FALSE}
+#繪圖
+library(gganimate)
+library(gifski)
+p=ggplot(b,aes(x = time, y = value,colour=location)) + geom_line(stat='identity')+ labs(title="Adult education level")
+p+transition_reveal(time)
+```
+
+註解:2~5行繪圖
+
+```{r , class.source = c("numCode", "r", "numberLines"),message=FALSE,warning=FALSE}
+w=ggplot(d,aes(x=time,y=value,colour=country))+geom_line(stat='identity')+labs(title="Government expenditure on education")
+w+transition_reveal(time)
+```
+
+```{r ,class.source = c("numCode", "r", "numberLines"),message=FALSE,warning=FALSE}
+r=ggplot(f,aes(x=year,y=amount))+geom_line(colour='#6085DB')+labs(title="台灣教育經費")
+r+transition_reveal(year)
+```
+
+```{r,class.source = c("numCode", "r", "numberLines"),message=FALSE,warning=FALSE}
+o=ggplot(f,aes(x=year,y=value))+geom_line(colour='#5EB2F2')+labs(title="台灣教育經費(GDP占比)")
+o+transition_reveal(year)
+```
+
+---
+## 結論
+
+多年來各國都開始重視基礎教育,使得最高教育程度在高中以下的成年人比率下降
