@@ -1,0 +1,110 @@
+---
+title: "作業一 題目11.72"
+author: "資二B 09156257 張芷瑜"
+output:
+  html_document:
+    highlight: pygments
+    df_print: kable
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+  word_document:
+    toc: yes
+    toc_depth: '4'
+  pdf_document: default
+---
+<style type="text/css">
+body{font-size:14px}
+</style>
+---
+
+### 題目
+Suppose that in Example 11.1 we wanted to determine whether there was sufficient evidence to conclude that the new system would $\it not$ be cost-effective. Set up the null and alternative hypotheses and discuss the consequence of Type I and Type II errors. Conduct the test. Is your conclusion the same aas the one reached in Example 11.1? Explain.
+
+假設Example 11.1我們要決定是否有足夠的證據可以推斷新系統不符合成本效益.設定虛無假設與對立假設並討論型I和型II錯誤.做完後,結論是否與Example 11.1原本的結論一樣?解釋.
+
+### 解題
+在Example 11.1提到$\mu>170$會符合成本效益,因為題目是要求要不符合成本效益,因此我假設$\mu<170$,並為了與另一名同學作出區別,我改動$\alpha$值($\alpha=0.01$).  
+  
+  
+$H_0:\mu=170,\ H_1:\mu<170$  
+
+$\bar x=178,\ \sigma=65,\ n=400,\ \alpha=0.01$  
+
+Rejection Region:$Z_\alpha=-2.33$  
+
+$Z={\bar x-\mu \over \sigma/ \sqrt n}={178-170 \over 65/ \sqrt400}=2.46$  
+
+$\bar x$未落入拒絕域$\to$不拒絕$H_0$,不支持$H_1$  
+
+$P-value=P(\bar x<178)=P(Z<2.46)=0.9931$  
+
+因為P-value>0.1,因此沒有證據支持對立假說是對的  
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,class.source = c("numCode", "r", "numberLines"),results='asis'}
+#計算
+round((178.0-170)/(65/20),digits = 2)
+```
+
+註解:計算Z值  
+
+#### 繪圖
+
+```{r draw,class.source = c("numCode", "r", "numberLines")}
+#常態分佈圖
+lower=-3; upper=3
+normSeq=seq(from=lower,to=upper,length=500)
+normPDF = dnorm(normSeq)
+
+rpt =-2.33
+rseq = seq(from=lower,to=rpt,length=500)
+
+plot(normSeq,normPDF,type='l',xlab="Z")
+
+title("Z分配")
+
+for (i in seq(1,500) )
+{
+rzseg= seq(from=0,to=dnorm(rseq[i]),length=500)
+lines(rep(rseq[i],500),rzseg,col="#023e8a")   
+}
+
+#鉛直線
+abline(v=2.46,col="#0096c7")
+
+#文字
+text(-2.6,0.04,"-2.33",col="#023e8a",cex=1)
+text(-2,0.01,"<-0.01",col="#023e8a",cex=1)
+text(2.8,0,"Z=2.46",col="#0096c7",cex=1)
+```
+  
+註解:2 ~ 17行常態分佈圖. 20行z=2.46的鉛直線. 23 ~ 25行圖上的文字  
+
+![](C:\Users\User\Desktop\統計\1.jpg) 
+
+![](C:\Users\User\Desktop\統計\2.jpg) 
+
+
+#### β值
+計算β值必須改變原本的$H_0$,我將其改成$H_0: \mu=160$  
+
+臨界值:$\bar x_L=-2.33({65 \over \sqrt{400}})+170=162.43$  
+
+$\beta=P(\bar x>162.43\mid \mu=160)=P(Z>{162.43-160 \over 65/20})=P(Z>0.75)=1-0.7734=0.2266$  
+
+![](C:\Users\User\Desktop\統計\3.jpg) 
+
+### 結論
+計算出的結果不拒絕$H_0$也不支持$H_1$(拒絕域),也無證據支持對立假說是對的,因此無法推斷新系統不符合成本效益,結果應該比較接近Example 11.1的結論
+
+統整謝孟璋與我的計算,可以看出改變$\alpha$也會使$\beta$改變,因此若想要降低$\beta$值可以藉由提高$\alpha$值的方法來降低Type II的錯誤機率,$\alpha$與$\beta$為反相關公式
+
+![](C:\Users\User\Desktop\統計\4.jpg) 

@@ -1,0 +1,71 @@
+---
+title: "台灣手搖杯消費習慣分析"
+author: "資二B 09156257 張芷瑜 09156260 林沛杰"
+output:
+  html_document:     
+     highlight: pygments
+     df_print: kable
+  pdf_document: default
+---
+
+---
+資料來源:經濟部統計處月報
+---
+110年5 ~ 8月台灣疫情爆發，對於人們的飲食消費習慣有非常大的改變，但這段時間正值炎熱的夏季，往年在這個時期，街上的人大多都人手一杯手搖飲，因此我們想要探討疫情爆發對於台灣人購買手搖飲的消費習慣是否有顯著的改變。
+
+我們以109年5 ~ 8月飲料店的營業額進行分析，並假設如果110年5 ~ 8月的營業額平均相較109年5~8月的營業額平均下滑30%以上，就認定疫情再度爆發對台灣人在夏日購買手搖杯的消費習慣有顯著的影響。
+
+109年5~8月平均營業額:
+```{r c,class.source = c("numCode", "r", "numberLines")}
+(74+83+87+88)/4
+```
+
+標準差:
+```{r c2,class.source= c ("numCode","r","numberLines")}
+a=sqrt(((74-83)^2+(83-83)^2+(87-83)^2+(88-83)^2)/4)
+round(a,digits = 2)
+```
+
+下滑30%的營業額平均：
+```{r c3,class.source = c("numCode", "r", "numberLines")}
+round(83*0.7)
+```
+
+$$H_0:\mu=58,\ H_1:\mu>58\\ \bar x=83,\ \sigma=5.52,\ n=4,\ \alpha=0.05\\ \bar {x_L}=1.645+{5.52 \over 2}+58=62.54$$
+
+```{r c4,class.source = c("numCode", "r", "numberLines")}
+1.645*5.52/2+58
+```
+
+```{r,class.source = c("numCode", "r", "numberLines")}
+#計算
+round((83.0-58)/(5.52/2),digits = 2)
+```
+
+```{r draw,class.source = c("numCode", "r", "numberLines")}
+#常態分佈圖
+lower=-3; upper=3
+normSeq=seq(from=lower,to=upper,length=500)
+normPDF = dnorm(normSeq)
+
+rpt =9.06
+rseq = seq(from=rpt,to=upper,length=500)
+
+plot(normSeq,normPDF,type='l',xlab="Z")
+
+#title("Z分配")
+
+for (i in seq(1,500) )
+{
+rzseg= seq(from=0,to=dnorm(rseq[i]),length=500)
+lines(rep(rseq[i],500),rzseg,col="#023e8a")   
+}
+```
+
+算出的值落入拒絕域→支持$H_1$並拒絕$H_0$。這代表110年5~8月的營業額平均>58，手搖飲料店並未受到重創，疫情爆發對消費者購買手搖杯的意願沒有顯著的影響。
+
+根據我們的推斷，手搖飲在疫情期間的商機沒有顯著下降很有可能是因為外送業的興起。外送業使得民眾不用出門也能夠喝到手搖飲料。因此我們蒐集了一些外送平台的數據來佐證。
+
+根據經濟部統計處，今年隨著疫期升溫、順應防疫居家的消費需求，餐飲業者提供外送或宅配服務之家數占比由去年4月之57%提高至今年5月之64.8%，飲料店業由57.5%提高至69.2%，。就營業額表現觀察，有提供外送或宅配服務之業者，營業額減幅明顯低於無外送或宅配服務者。(來源：https://www.moea.gov.tw/Mns/dos/bulletin/Bulletin.aspx?kind=9&html=1&menu_id=18808&bull_id=9072)
+
+結論：疫情的爆發對於餐飲業影響巨大，但若單以飲料店平均營業額來看，並未有非常顯著的影響，我們推估會有這樣的結果是因為近年外送平台興起，讓民眾即使在家也能買到手搖飲，因此沒有巨大的影響。
